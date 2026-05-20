@@ -1,72 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Configuración álbum
-TOTAL_ESTAMPAS = 980
-ESTAMPAS_POR_PAQUETE = 7
-PRECIO_SOBRE = 9.50
-PRECIO_CAJA = 975.0
-SOBRES_POR_CAJA = 104
-SIMULACIONES = 2000
-
 # Semilla
 np.random.seed(2026)
-
-def calcular_costo(sobres):
-    cajas = sobres // SOBRES_POR_CAJA # floor division
-    sobres_sueltos = sobres % SOBRES_POR_CAJA
-    
-    # Costo comprando cajas y sobres sueltos
-    costo_mixto = cajas * PRECIO_CAJA + sobres_sueltos * PRECIO_SOBRE
-    # Costo comprando una caja más en lugar de sueltos (por si conviene)
-    costo_solo_cajas = (cajas + 1) * PRECIO_CAJA
-    
-    return min(costo_mixto, costo_solo_cajas)
-
-def simular_un_album():
-    album = set()
-    sobres_comprados = 0
-    opciones = np.arange(TOTAL_ESTAMPAS)
-    
-    while len(album) < TOTAL_ESTAMPAS:
-        sobre = np.random.choice(opciones, size=ESTAMPAS_POR_PAQUETE, replace=False)
-        album.update(sobre)
-        sobres_comprados += 1
-        
-    return sobres_comprados
-
-# Correr simulación
-resultados_sobres = []
-for _ in range(SIMULACIONES):
-    resultados_sobres.append(simular_un_album())
-
-resultados_sobres = np.array(resultados_sobres)
-resultados_costos = np.array([calcular_costo(s) for s in resultados_sobres])
-
-# Estadísticas
-promedio_sobres = np.mean(resultados_sobres)
-mediana_sobres = np.median(resultados_sobres)
-p90_sobres = np.percentile(resultados_sobres, 90)
-min_sobres = np.min(resultados_sobres)
-max_sobres = np.max(resultados_sobres)
-
-promedio_costo = np.mean(resultados_costos)
-mediana_costo = np.median(resultados_costos)
-p90_costo = np.percentile(resultados_costos, 90)
-min_costo = np.min(resultados_costos)
-max_costo = np.max(resultados_costos)
-
-print(f"Sobres = Promedio: {promedio_sobres:.2f}, Mediana: {mediana_sobres}, P90: {p90_sobres}, Min: {min_sobres}, Max: {max_sobres}")
-print(f"Costos = Promedio: Q{promedio_costo:.2f}, Mediana: Q{mediana_costo:.2f}, P90: Q{p90_costo:.2f}, Min: Q{min_costo:.2f}, Max: Q{max_costo:.2f}")
-
-#---------------------
 
 #ETAPA 1
 # --- PARÁMETROS ---
 N = 100          # Número total de estampas diferentes
 S = 7            # Estampas por sobre (sin repetir dentro del sobre)
 R = 10000        # Número de simulaciones a realizar
-np.random.seed(2026)  # Semilla para reproducibilidad del generador
 
 # Resultados de las simulaciones
 resultados_sobres = np.zeros(R)
@@ -149,12 +91,6 @@ plt.tight_layout()
 plt.show()
 
 #-------------------
-
-# --- PARÁMETROS ---
-N = 100
-S = 7
-R = 10000
-np.random.seed(2026)
 
 # Cantidades de sobres a evaluar
 M_values = [20, 25, 30, 35, 40, 45, 50, 60, 70, 80]
